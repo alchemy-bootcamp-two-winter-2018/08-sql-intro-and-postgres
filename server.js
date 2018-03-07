@@ -1,30 +1,30 @@
 'use strict';
 
-// TODO: Install and require the NPM Postgres package 'pg' into your server.js, and ensure that it is then listed as a dependency in your package.json
+// TODOne: Install and require the NPM Postgres package 'pg' into your server.js, and ensure that it is then listed as a dependency in your package.json
 
 const fs = require('fs');
 const express = require('express');
 const pg = require('pg');
 
 // COMMENT: Why is the PORT configurable?
-// PUT YOUR RESPONSE HERE
+// The PORT is configurable because we can decide which port we want to run on. It's 3000 now but if we told it to run on 4000 it would. 
 const PORT = process.env.PORT || 3000;
 const app = express();
 
-// TODO: Complete the connection string (conString) for the URL that will connect to your local Postgres database.
+// TODOne: Complete the connection string (conString) for the URL that will connect to your local Postgres database.
 
 // Windows and Linux users: You should have retained the user/password from the pre-work for this course.
 // Your OS may require that your conString is composed of additional information including user and password.
 // const conString = 'postgres://USER:PASSWORD@HOST:PORT/DBNAME';
 
 // Mac:
-// const conString = 'postgres://localhost:5432/DBNAME';
+const conString = 'postgres://localhost:5432/kilovolt';
 
 
 // TODO: Our pg module has a Client constructor that accepts one argument: the conString we just defined.
 // This is how it knows the URL and, for Windows and Linux users, our username and password for our database when client.connect() is called below. Thus, we need to pass our conString into our pg.Client() call.
 
-const client = new pg.Client('something needs to go here... read the instructions above!');
+const client = new pg.Client(conString);
 
 // REVIEW: Use the client object to connect to our DB.
 client.connect();
