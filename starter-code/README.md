@@ -1,6 +1,6 @@
 # Kilovolt Blog
 
-**Author**: Alchemy Code Lab 301 Day Class - Fall 2017
+**Author**: Alchemy Code Lab 301 Day Class - Winter 2018
 
 **Version**: 1.0.0
 
