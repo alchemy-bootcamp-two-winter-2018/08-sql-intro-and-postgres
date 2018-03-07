@@ -195,7 +195,7 @@ function loadArticles() {
 
 function loadDB() {
     // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-    // This is dealing with section 3 & 4. It is dealing with the fetchAll & insertRecord method. SELECT is reading so it is the R in CRUD. Insert is creating so it is the C in CRUD.
+    // This is dealing with section 3 & 4. It is dealing not dealing with article.js methods. It is not dealing with CRUD.
     client.query(`
       CREATE TABLE IF NOT EXISTS articles (
       article_id SERIAL PRIMARY KEY,
