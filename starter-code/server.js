@@ -25,7 +25,7 @@ const conString = 'postgres://postgres:Alchemy@localhost:5432/kilovolt';
 // const conString = 'postgres://localhost:5432/DBNAME';
 
 
-// TODO: Our pg module has a Client constructor that accepts one argument: the conString we just defined.
+// TODOne: Our pg module has a Client constructor that accepts one argument: the conString we just defined.
 // This is how it knows the URL and, for Windows and Linux users, our username and password for our database when client.connect() is called below. Thus, we need to pass our conString into our pg.Client() call.
 
 const client = new pg.Client(conString);
@@ -37,31 +37,32 @@ client.connect();
 // REVIEW: Install the middleware plugins:
 
 // COMMENT: What kind of request body is this first middleware handling?
-// PUT YOUR RESPONSE HERE
+// JSON-encoded
 app.use(express.json());
 // COMMENT: What kind of request body is this second middleware handling?
-// PUT YOUR RESPONSE HERE
+// urlencoded
 app.use(express.urlencoded({extended: true}));
 // COMMENT: What is this middleware doing for us?
-// PUT YOUR RESPONSE HERE
+// it gets express.static running so it can serve files
 app.use(express.static('./public'));
 
 
 // REVIEW: Routes for requesting HTML resources
 app.get('/new', (request, response) => {
     // COMMENT: 
-    // 1) What number(s) of the full-stack-diagram.png image correspond to the following line of code? 
-    // 2) What part of the front end process is interacting with this particular piece of `server.js`? 
-    // PUT YOUR RESPONSE HERE
+    // 1) What number(s) of the full-stack-diagram.png image correspond to the following line of code? 1, 2, 5
+    // 2) What part of the front end process is interacting with this particular piece of `server.js`? new.html
+    // My responses immediately follow the above questions.
     response.sendFile('new.html', {root: './public'});
 });
 
 // REVIEW: Routes for making API calls to use CRUD Operations on our database
 app.get('/articles', (request, response) => {
-    // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? 
-    // Which method of article.js is interacting with this particular piece of `server.js`? 
-    // What part of CRUD is being enacted/managed by this particular piece of code?
-    // PUT YOUR RESPONSE HERE
+    
+    // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? 2,3,4,5
+    // Which method of article.js is interacting with this particular piece of `server.js`? Article.fetchAll
+    // What part of CRUD is being enacted/managed by this particular piece of code? READ
+    // My responses immediately follow the questions above.
     client.query('SELECT * FROM articles')
         .then(function(result) {
             response.send(result.rows);
@@ -72,10 +73,10 @@ app.get('/articles', (request, response) => {
 });
 
 app.post('/articles', (request, response) => {
-    // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? 
-    // Which method of article.js is interacting with this particular piece of `server.js`? 
-    // What part of CRUD is being enacted/managed by this particular piece of code?
-    // PUT YOUR RESPONSE HERE
+    // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? 2,3,4,5
+    // Which method of article.js is interacting with this particular piece of `server.js`? Article.prototype.insertRecord
+    // What part of CRUD is being enacted/managed by this particular piece of code? CREATE
+    // My responses immediately follow the questions above.
     client.query(
         `INSERT INTO
         articles(title, author, "authorUrl", category, "publishedOn", body)
@@ -99,10 +100,10 @@ app.post('/articles', (request, response) => {
 });
 
 app.put('/articles/:id', (request, response) => {
-    // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? 
-    // Which method of article.js is interacting with this particular piece of `server.js`? 
-    // What part of CRUD is being enacted/managed by this particular piece of code?
-    // PUT YOUR RESPONSE HERE
+    // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? 2,3,4,5
+    // Which method of article.js is interacting with this particular piece of `server.js`? Article.prototype.updateRecord
+    // What part of CRUD is being enacted/managed by this particular piece of code? UPDATE
+    // My responses immediately follow the above questions.
     client.query(
         `UPDATE articles
         SET
@@ -128,10 +129,11 @@ app.put('/articles/:id', (request, response) => {
 });
 
 app.delete('/articles/:id', (request, response) => {
-    // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? 
+    // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? 2,3,4,5
     // Which method of article.js is interacting with this particular piece of `server.js`? 
-    // What part of CRUD is being enacted/managed by this particular piece of code?
-    // PUT YOUR RESPONSE HERE
+    //Article.prototype.deleteRecord
+    // What part of CRUD is being enacted/managed by this particular piece of code? DELETE
+    // My responses immediately follow the above questions.
     client.query(
         `DELETE FROM articles WHERE article_id=$1;`,
         [request.params.id]
@@ -148,7 +150,7 @@ app.delete('/articles', (request, response) => {
     // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? 
     // Which method of article.js is interacting with this particular piece of `server.js`? 
     // What part of CRUD is being enacted/managed by this particular piece of code?
-    // PUT YOUR RESPONSE HERE
+    // All answers are identical to the answers for the other app.delete method above
     client.query(
         'DELETE FROM articles;'
     )
@@ -161,7 +163,7 @@ app.delete('/articles', (request, response) => {
 });
 
 // COMMENT: What is this function invocation doing?
-// PUT YOUR RESPONSE HERE
+// loads the database into memory
 loadDB();
 
 app.listen(PORT, () => {
@@ -173,7 +175,7 @@ app.listen(PORT, () => {
 ////////////////////////////////////////
 function loadArticles() {
     // COMMENT: Why is this function called after loadDB?
-    // PUT YOUR RESPONSE HERE
+    // The datbase is what contains the articles (data) - no sense in trying  to load the articles if we don't have access to the contents of the database already.
     client.query('SELECT COUNT(*) FROM articles')
         .then(result => {
             // REVIEW: result.rows is an array of objects that Postgres returns as a response to a query.
