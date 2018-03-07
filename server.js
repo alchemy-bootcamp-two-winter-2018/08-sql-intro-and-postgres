@@ -57,7 +57,7 @@ app.get('/articles', (request, response) => {
     // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? 
     // Which method of article.js is interacting with this particular piece of `server.js`? 
     // What part of CRUD is being enacted/managed by this particular piece of code?
-    // PUT YOUR RESPONSE HERE
+    // This represents numbers 2-5, the whole process. The .fetchAll is what is interacting with this bit of code. And it is READING currently
     client.query('SELECT * FROM articles')
         .then(function(result) {
             response.send(result.rows);
@@ -71,7 +71,7 @@ app.post('/articles', (request, response) => {
     // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? 
     // Which method of article.js is interacting with this particular piece of `server.js`? 
     // What part of CRUD is being enacted/managed by this particular piece of code?
-    // PUT YOUR RESPONSE HERE
+    // This represents numbers 2-5, the whole process. The .insertRecord is what is interacting with this bit of code. And it is UPDATING currently to include anything new that was entered into the form 
     client.query(
         `INSERT INTO
         articles(title, author, "authorUrl", category, "publishedOn", body)
@@ -98,7 +98,7 @@ app.put('/articles/:id', (request, response) => {
     // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? 
     // Which method of article.js is interacting with this particular piece of `server.js`? 
     // What part of CRUD is being enacted/managed by this particular piece of code?
-    // PUT YOUR RESPONSE HERE
+    //  This represents numbers 2-5, the whole process. The .updateRecord is what is interacting with this bit of code. And it is UPDATING to add new inputs to our table in the database
     client.query(
         `UPDATE articles
         SET
