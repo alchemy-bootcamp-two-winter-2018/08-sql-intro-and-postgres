@@ -1,9 +1,9 @@
 'use strict';
 
-// TODO: Install and require the NPM Postgres package 'pg' into your server.js, and ensure that it is then listed as a dependency in your package.json
-
+// TODOne: Install and require the NPM Postgres package 'pg' into your server.js, and ensure that it is then listed as a dependency in your package.json
 const fs = require('fs');
 const express = require('express');
+const pg = require('pg');
 
 // COMMENT: Why is the PORT configurable?
 // PUT YOUR RESPONSE HERE
