@@ -100,9 +100,7 @@ articleView.getFormArticle = () => {
 // aka preview
 articleView.create = () => {
     $('#articles').empty();
-
     const article = articleView.getFormArticle();
-
     $('#articles').append(article.toHtml());
 };
 

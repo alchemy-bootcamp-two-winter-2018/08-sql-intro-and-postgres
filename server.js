@@ -7,7 +7,7 @@ const express = require('express');
 const pg = require('pg');
 
 // COMMENT: Why is the PORT configurable?
-// PUT YOUR RESPONSE HERE
+// Because of the ability to use different ports for seperate processes, if necessary.
 const PORT = process.env.PORT || 3000;
 const app = express();
 
@@ -36,7 +36,7 @@ client.connect();
 // JSON data
 app.use(express.json());
 // COMMENT: What kind of request body is this second middleware handling?
-// x-ww-form-urlencoded
+// x-ww-form-urlencoded - form data
 app.use(express.urlencoded({extended: true}));
 // COMMENT: What is this middleware doing for us?
 // setting up the public folder as the default folder served when the site is loaded (static files such as index.html)
