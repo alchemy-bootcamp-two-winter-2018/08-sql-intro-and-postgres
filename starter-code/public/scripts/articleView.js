@@ -97,6 +97,7 @@ articleView.getFormArticle = () => {
     return article;
 };
 
+// aka preview
 articleView.create = () => {
     $('#articles').empty();
 
@@ -129,7 +130,7 @@ articleView.initIndexPage = () => {
     articleView.handleMainNav();
     articleView.setTeasers();
 
-    $('pre code').each(function(i, block) {
+    $('pre code').each((i, block) => {
         hljs.highlightBlock(block);
     });
 };

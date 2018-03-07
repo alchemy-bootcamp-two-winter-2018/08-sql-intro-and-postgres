@@ -17,7 +17,7 @@ const app = express();
 // const conString = 'postgres://USER:PASSWORD@HOST:PORT/DBNAME';
 
 // Mac:
-// const conString = 'postgres://localhost:5432';
+// const conString = 'postgres://localhost:5432/DBNAME';
 
 
 // TODO: Our pg module has a Client constructor that accepts one argument: the conString we just defined.
