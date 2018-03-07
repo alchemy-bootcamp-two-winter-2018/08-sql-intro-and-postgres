@@ -21,7 +21,7 @@ const app = express();
 const conString = 'postgres://localhost:5432/kilovolt';
 
 
-// TODO: Our pg module has a Client constructor that accepts one argument: the conString we just defined.
+// TODOne: Our pg module has a Client constructor that accepts one argument: the conString we just defined.
 // This is how it knows the URL and, for Windows and Linux users, our username and password for our database when client.connect() is called below. Thus, we need to pass our conString into our pg.Client() call.
 
 const client = new pg.Client(conString);
@@ -33,13 +33,13 @@ client.connect();
 // REVIEW: Install the middleware plugins:
 
 // COMMENT: What kind of request body is this first middleware handling?
-// PUT YOUR RESPONSE HERE
+// This is responsible for parsing the JSON and turning into something readable for the database.
 app.use(express.json());
 // COMMENT: What kind of request body is this second middleware handling?
-// PUT YOUR RESPONSE HERE
+// This is setting up an abort for the parsed JSON if an error is thrown? 
 app.use(express.urlencoded({extended: true}));
 // COMMENT: What is this middleware doing for us?
-// PUT YOUR RESPONSE HERE
+// This is telling the server to serve up the files inside the public folder which the browser needs to render and run the website. 
 app.use(express.static('./public'));
 
 
@@ -48,7 +48,7 @@ app.get('/new', (request, response) => {
     // COMMENT: 
     // 1) What number(s) of the full-stack-diagram.png image correspond to the following line of code? 
     // 2) What part of the front end process is interacting with this particular piece of `server.js`? 
-    // PUT YOUR RESPONSE HERE
+    // (1)This is #2 and #5 in the diagram (2) The function call on the bottom of new.html. Setting up the new.html page with all it's methods  
     response.sendFile('new.html', {root: './public'});
 });
 
