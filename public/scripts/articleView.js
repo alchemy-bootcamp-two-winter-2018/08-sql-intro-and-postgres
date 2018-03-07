@@ -104,13 +104,6 @@ articleView.create = () => {
     const article = articleView.getFormArticle();
 
     $('#articles').append(article.toHtml());
-
-    $('pre code').each(function(i, block) {
-        hljs.highlightBlock(block);
-    });
-
-    $('#export-field').show();
-    $('#article-json').val(`${JSON.stringify(article)}`);
 };
 
 articleView.submit = event => {
@@ -129,8 +122,4 @@ articleView.initIndexPage = () => {
     articleView.handleAuthorFilter();
     articleView.handleMainNav();
     articleView.setTeasers();
-
-    $('pre code').each((i, block) => {
-        hljs.highlightBlock(block);
-    });
 };
