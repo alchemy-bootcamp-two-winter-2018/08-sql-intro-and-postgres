@@ -1,14 +1,17 @@
 'use strict';
 
-// TODO: Install and require the NPM Postgres package 'pg' into your server.js, and ensure that it is then listed as a dependency in your package.json
+// TODOne: Install and require the NPM Postgres package 'pg' into your server.js, and ensure that it is then listed as a dependency in your package.json
 
+const postgres = require('pg');
 const fs = require('fs');
 const express = require('express');
+const PORT = process.env.PORT || 3000;
 
 // COMMENT: Why is the PORT configurable?
-// PUT YOUR RESPONSE HERE
-const PORT = process.env.PORT || 3000;
+// Because you can't use the same port for two different server processes.
 const app = express();
+const conString = 'postgres://localhost:5432/kilovolt';
+
 
 // TODO: Complete the connection string (conString) for the URL that will connect to your local Postgres database.
 
