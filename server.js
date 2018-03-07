@@ -195,7 +195,7 @@ function loadArticles() {
 
 function loadDB() {
     // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-    // #3 and #4, Article.fetchAll (); it is CREATing and READing.
+    // #3 and #4, this is never called by the front-end, and it is only defining the data table, not changing it.
     client.query(`
       CREATE TABLE IF NOT EXISTS articles (
       article_id SERIAL PRIMARY KEY,
