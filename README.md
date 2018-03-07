@@ -1,6 +1,6 @@
 # Kilovolt Blog
 
-**Author**: Alchemy Code Lab 301 Day Class - Fall 2017
+**Author**: Alchemy Code Lab Bootcamp Part 2 Day Class - Winter 2018
 
 **Version**: 1.0.0
 
@@ -32,4 +32,4 @@ Libraries used include: jQuery (for DOM manipulation, AJAX), HandlebarsJS (for H
 
 Back end:
 
-We are using ExpressJS and Node to create a server. And a PSQL database for persistence. We use node-postgres (aka pg) to conmect to our database. 
+We are using ExpressJS and Node to create a server. And a PSQL database for persistence. We use node-postgres (aka pg) to connect to our database. 
