@@ -6,8 +6,8 @@ const fs = require('fs');
 const express = require('express');
 const pg = require('pg');
 
-// COMMENT: Why is the PORT configurable?
-// PUT YOUR RESPONSE HERE
+// COMMENTed: Why is the PORT configurable?
+// My understanding is that it doesn't matter at the moment, but when we connect to an environment like Heroku, we want it to be able to tell the server which port to use.
 const PORT = process.env.PORT || 3000;
 const app = express();
 
@@ -32,14 +32,14 @@ client.connect();
 
 // REVIEW: Install the middleware plugins:
 
-// COMMENT: What kind of request body is this first middleware handling?
-// PUT YOUR RESPONSE HERE
+// COMMENTed: What kind of request body is this first middleware handling?
+// So this is my understanding of what's happening here: app.use is used to "mount middleware" - in other words, we're saying "Hey Express, here are some functions I want you to have access to as you process requests and responses." The express.json middleware parses, not surprisingly, JSON files coming in as requests. After the middleware runs, the request gets a "body" property containing the parsed object. Specifically, I would expect this to process our article data.
 app.use(express.json());
-// COMMENT: What kind of request body is this second middleware handling?
-// PUT YOUR RESPONSE HERE
+// COMMENTed: What kind of request body is this second middleware handling?
+// Data posted to the server can come in formats other than JSON. The middleware below handles requests that are urlencoded (like traditional HTML form submissions) and, again, adds a body property holding the parsed information to the request object.
 app.use(express.urlencoded({extended: true}));
-// COMMENT: What is this middleware doing for us?
-// PUT YOUR RESPONSE HERE
+// COMMENTed: What is this middleware doing for us?
+// This middleware tells Express where to find our site's static (and public) assets so it can serve them to visitors when requested.
 app.use(express.static('./public'));
 
 
