@@ -6,24 +6,24 @@ const express = require('express');
 const pg = require('pg');
 
 // COMMENT: Why is the PORT configurable?
-// PUT YOUR RESPONSE HERE
+// So you can set up multiple server(s) and/or database(s).
 const PORT = process.env.PORT || 3000;
 const app = express();
 
-// TODO: Complete the connection string (conString) for the URL that will connect to your local Postgres database.
+// TODOne: Complete the connection string (conString) for the URL that will connect to your local Postgres database.
 
 // Windows and Linux users: You should have retained the user/password from the pre-work for this course.
 // Your OS may require that your conString is composed of additional information including user and password.
 // const conString = 'postgres://USER:PASSWORD@HOST:PORT/DBNAME';
 
 // Mac:
-// const conString = 'postgres://localhost:5432/DBNAME';
+const conString = 'postgres://localhost:5432/kilovolt';
 
 
-// TODO: Our pg module has a Client constructor that accepts one argument: the conString we just defined.
+// TODOne: Our pg module has a Client constructor that accepts one argument: the conString we just defined.
 // This is how it knows the URL and, for Windows and Linux users, our username and password for our database when client.connect() is called below. Thus, we need to pass our conString into our pg.Client() call.
 
-const client = new pg.Client('something needs to go here... read the instructions above!');
+const client = new pg.Client(conString);
 
 // REVIEW: Use the client object to connect to our DB.
 client.connect();
@@ -32,22 +32,22 @@ client.connect();
 // REVIEW: Install the middleware plugins:
 
 // COMMENT: What kind of request body is this first middleware handling?
-// PUT YOUR RESPONSE HERE
+// At this point the request body is a string because the json is a string.
 app.use(express.json());
 // COMMENT: What kind of request body is this second middleware handling?
-// PUT YOUR RESPONSE HERE
+// Now the reqest body is being deserialized by the urlencoded function. So, the server can execute the code rather than just read a string.
 app.use(express.urlencoded({extended: true}));
 // COMMENT: What is this middleware doing for us?
-// PUT YOUR RESPONSE HERE
+// It is expressing all static files in the public folder. This is done so all of are static files are served when requested. 
 app.use(express.static('./public'));
 
 
 // REVIEW: Routes for requesting HTML resources
 app.get('/new', (request, response) => {
     // COMMENT: 
-    // 1) What number(s) of the full-stack-diagram.png image correspond to the following line of code? 
+    // 1) What number(s) of the full-stack-diagram.png image correspond to the following line of code?
     // 2) What part of the front end process is interacting with this particular piece of `server.js`? 
-    // PUT YOUR RESPONSE HERE
+    // It is 5, it is responding with the new.html file from the public folder.
     response.sendFile('new.html', {root: './public'});
 });
 
@@ -56,7 +56,7 @@ app.get('/articles', (request, response) => {
     // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? 
     // Which method of article.js is interacting with this particular piece of `server.js`? 
     // What part of CRUD is being enacted/managed by this particular piece of code?
-    // PUT YOUR RESPONSE HERE
+    // It is refering to section 3 & 4. It is dealing with the fetchAll method. SELECT is the same as read so it is R in CRUD.
     client.query('SELECT * FROM articles')
         .then(function(result) {
             response.send(result.rows);
@@ -70,7 +70,7 @@ app.post('/articles', (request, response) => {
     // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? 
     // Which method of article.js is interacting with this particular piece of `server.js`? 
     // What part of CRUD is being enacted/managed by this particular piece of code?
-    // PUT YOUR RESPONSE HERE
+    // This is dealing with section 3 & 4. It is dealing with the insertRecord method. INSERT is creating so it is the C in CRUD.
     client.query(
         `INSERT INTO
         articles(title, author, "authorUrl", category, "publishedOn", body)
@@ -97,7 +97,7 @@ app.put('/articles/:id', (request, response) => {
     // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? 
     // Which method of article.js is interacting with this particular piece of `server.js`? 
     // What part of CRUD is being enacted/managed by this particular piece of code?
-    // PUT YOUR RESPONSE HERE
+    // This is dealing with section 3 & 4. It is dealing with the updateRecord method. PUT is updating so it is the U in CRUD.
     client.query(
         `UPDATE articles
         SET
@@ -126,7 +126,7 @@ app.delete('/articles/:id', (request, response) => {
     // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? 
     // Which method of article.js is interacting with this particular piece of `server.js`? 
     // What part of CRUD is being enacted/managed by this particular piece of code?
-    // PUT YOUR RESPONSE HERE
+    // This is dealing with section 3 & 4. It is dealing with the deleteRecord method. DELETE is destroying so it is the D in CRUD.
     client.query(
         `DELETE FROM articles WHERE article_id=$1;`,
         [request.params.id]
@@ -143,7 +143,7 @@ app.delete('/articles', (request, response) => {
     // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? 
     // Which method of article.js is interacting with this particular piece of `server.js`? 
     // What part of CRUD is being enacted/managed by this particular piece of code?
-    // PUT YOUR RESPONSE HERE
+    // This is dealing with section 3 & 4. It is dealing with the deleteTable method. DELETE is destroying so it is the D in CRUD.
     client.query(
         'DELETE FROM articles;'
     )
@@ -156,7 +156,7 @@ app.delete('/articles', (request, response) => {
 });
 
 // COMMENT: What is this function invocation doing?
-// PUT YOUR RESPONSE HERE
+// It is creating the table if one does not exist, then it is loading the articles.
 loadDB();
 
 app.listen(PORT, () => {
@@ -168,7 +168,7 @@ app.listen(PORT, () => {
 ////////////////////////////////////////
 function loadArticles() {
     // COMMENT: Why is this function called after loadDB?
-    // PUT YOUR RESPONSE HERE
+    // It is called after because you cannot query articles that have not yet loaded. Also, this function is called in the loadDB function.
     client.query('SELECT COUNT(*) FROM articles')
         .then(result => {
             // REVIEW: result.rows is an array of objects that Postgres returns as a response to a query.
@@ -195,7 +195,7 @@ function loadArticles() {
 
 function loadDB() {
     // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-    // PUT YOUR RESPONSE HERE
+    // This is dealing with section 3 & 4. It is dealing with the fetchAll & insertRecord method. SELECT is reading so it is the R in CRUD. Insert is creating so it is the C in CRUD.
     client.query(`
       CREATE TABLE IF NOT EXISTS articles (
       article_id SERIAL PRIMARY KEY,
