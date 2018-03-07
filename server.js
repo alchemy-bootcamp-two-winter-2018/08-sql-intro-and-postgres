@@ -127,7 +127,7 @@ app.delete('/articles/:id', (request, response) => {
     // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? 
     // Which method of article.js is interacting with this particular piece of `server.js`? 
     // What part of CRUD is being enacted/managed by this particular piece of code?
-    // PUT YOUR RESPONSE HERE
+    // This represents numbers 2-5, the whole process. The .deleteRecord is what is interacting with this bit of code. And it is DELETING any of the id's of $1 which is the title. So it would delete just the title column on the data.
     client.query(
         `DELETE FROM articles WHERE article_id=$1;`,
         [request.params.id]
@@ -144,7 +144,7 @@ app.delete('/articles', (request, response) => {
     // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? 
     // Which method of article.js is interacting with this particular piece of `server.js`? 
     // What part of CRUD is being enacted/managed by this particular piece of code?
-    // PUT YOUR RESPONSE HERE
+    // This represents numbers 2-5, the whole process. The .truncateTable is what is interacting with this bit of code. And it is DELETING the entire article from the database. 
     client.query(
         'DELETE FROM articles;'
     )
@@ -157,7 +157,7 @@ app.delete('/articles', (request, response) => {
 });
 
 // COMMENT: What is this function invocation doing?
-// PUT YOUR RESPONSE HERE
+// This is calling our loadDB function so that the data base is loaded in the server. 
 loadDB();
 
 app.listen(PORT, () => {
@@ -169,7 +169,7 @@ app.listen(PORT, () => {
 ////////////////////////////////////////
 function loadArticles() {
     // COMMENT: Why is this function called after loadDB?
-    // PUT YOUR RESPONSE HERE
+    // So that the most recent version of the database has already been loaded before any new articles are loaded into the database.
     client.query('SELECT COUNT(*) FROM articles')
         .then(result => {
             // REVIEW: result.rows is an array of objects that Postgres returns as a response to a query.
@@ -196,7 +196,7 @@ function loadArticles() {
 
 function loadDB() {
     // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-    // PUT YOUR RESPONSE HERE
+    //  This represents numbers 3-4, receiving a request from the server and giving new information back. The .loadAll is what is interacting with this bit of code(I think? Or maybe no part of article.js). And it is READING and then UPDATING the database.  
     client.query(`
       CREATE TABLE IF NOT EXISTS articles (
       article_id SERIAL PRIMARY KEY,
