@@ -1,29 +1,29 @@
 'use strict';
 
-// TODO: Install and require the NPM Postgres package 'pg' into your server.js, and ensure that it is then listed as a dependency in your package.json
+// TODONE: Install and require the NPM Postgres package 'pg' into your server.js, and ensure that it is then listed as a dependency in your package.json
 
 const fs = require('fs');
 const express = require('express');
-
+const pg = require('pg');
 // COMMENT: Why is the PORT configurable?
-// PUT YOUR RESPONSE HERE
+//A port can only handle one request at a time.
 const PORT = process.env.PORT || 3000;
 const app = express();
 
-// TODO: Complete the connection string (conString) for the URL that will connect to your local Postgres database.
+// TODONE: Complete the connection string (conString) for the URL that will connect to your local Postgres database.
 
 // Windows and Linux users: You should have retained the user/password from the pre-work for this course.
 // Your OS may require that your conString is composed of additional information including user and password.
-// const conString = 'postgres://USER:PASSWORD@HOST:PORT/DBNAME';
+const conString = 'postgres://postgres:33loki3s@localhost:5432/kilovolt';
 
 // Mac:
 // const conString = 'postgres://localhost:5432/DBNAME';
 
 
-// TODO: Our pg module has a Client constructor that accepts one argument: the conString we just defined.
+// TODONE: Our pg module has a Client constructor that accepts one argument: the conString we just defined.
 // This is how it knows the URL and, for Windows and Linux users, our username and password for our database when client.connect() is called below. Thus, we need to pass our conString into our pg.Client() call.
 
-const client = new pg.Client('something needs to go here... read the instructions above!');
+const client = new pg.Client(conString);
 
 // REVIEW: Use the client object to connect to our DB.
 client.connect();
@@ -35,19 +35,19 @@ client.connect();
 // PUT YOUR RESPONSE HERE
 app.use(express.json());
 // COMMENT: What kind of request body is this second middleware handling?
-// PUT YOUR RESPONSE HERE
+// 
 app.use(express.urlencoded({extended: true}));
 // COMMENT: What is this middleware doing for us?
-// PUT YOUR RESPONSE HERE
+// Handling static files, and sending them to the public address.
 app.use(express.static('./public'));
 
 
 // REVIEW: Routes for requesting HTML resources
 app.get('/new', (request, response) => {
     // COMMENT: 
-    // 1) What number(s) of the full-stack-diagram.png image correspond to the following line of code? 
+    // 1) What number(s) of the full-stack-diagram.png image correspond to the following line of code?
     // 2) What part of the front end process is interacting with this particular piece of `server.js`? 
-    // PUT YOUR RESPONSE HERE
+    // The response would be #5, and is sending info to .
     response.sendFile('new.html', {root: './public'});
 });
 
@@ -56,7 +56,7 @@ app.get('/articles', (request, response) => {
     // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? 
     // Which method of article.js is interacting with this particular piece of `server.js`? 
     // What part of CRUD is being enacted/managed by this particular piece of code?
-    // PUT YOUR RESPONSE HERE
+    // 2 and 3. The results are being sent to Article.loadAll. Update.
     client.query('SELECT * FROM articles')
         .then(function(result) {
             response.send(result.rows);
@@ -70,7 +70,7 @@ app.post('/articles', (request, response) => {
     // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? 
     // Which method of article.js is interacting with this particular piece of `server.js`? 
     // What part of CRUD is being enacted/managed by this particular piece of code?
-    // PUT YOUR RESPONSE HERE
+    // 
     client.query(
         `INSERT INTO
         articles(title, author, "authorUrl", category, "publishedOn", body)
@@ -190,6 +190,9 @@ function loadArticles() {
                 });
             });
             
+        })
+        .catch(err => {
+            console.error(err);
         });
 }
 
