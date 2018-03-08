@@ -7,7 +7,7 @@ const express = require('express');
 const pg = require('pg');
 
 // COMMENTed: Why is the PORT configurable?
-// My understanding is that it doesn't matter at the moment, but when we connect to an environment like Heroku, we want it to be able to tell the server which port to use.
+// My understanding is that it doesn't matter at the moment, but when we connect to an environment like Heroku, we'll want it to be able to tell the server which port to use.
 const PORT = process.env.PORT || 3000;
 const app = express();
 
@@ -33,7 +33,7 @@ client.connect();
 // REVIEW: Install the middleware plugins:
 
 // COMMENTed: What kind of request body is this first middleware handling?
-// So this is my understanding of what's happening here: app.use is used to "mount middleware" - in other words, we're saying "Hey Express, here are some functions I want you to have access to as you process requests and responses." The express.json middleware parses, not surprisingly, JSON files coming in as requests. After the middleware runs, the request gets a "body" property containing the parsed object. Specifically, I would expect this to process our article data.
+// So this is my understanding of what's happening here: app.use is used to "mount middleware" - in other words, we're saying "Hey Express, here are some functions I want you to have access to as you process requests and responses." The express.json middleware parses, not surprisingly, JSON passed to the server in a request. After the middleware runs, the request gets a "body" property containing the parsed object.
 app.use(express.json());
 // COMMENTed: What kind of request body is this second middleware handling?
 // Data posted to the server can come in formats other than JSON. The middleware below handles requests that are urlencoded (like traditional HTML form submissions) and, again, adds a body property holding the parsed information to the request object.
@@ -57,7 +57,7 @@ app.get('/articles', (request, response) => {
     // COMMENTed: What number(s) of the full-stack-diagram.png image correspond to the following line of code? 
     // Which method of article.js is interacting with this particular piece of `server.js`? 
     // What part of CRUD is being enacted/managed by this particular piece of code?
-    // The code below corresponds to numbers 3 and 4 in the diagram. Requests come from the `fetchAll` method in article.js. It's the R (i.e. Read) in CRUD being enacted.
+    // The code below corresponds to numbers 3, 4, and 5 in the diagram (and is triggered by 2). (Not sure how literally I should take "the following line of code." Specifically, a `client.query` line corresponds to 3, a line like `result.rows` corresponds to 4, and a `response.send` line corresponds to 5. I suppose the `.catch` part could correspond to anywhere from 2 through 5, depending on the problem.) Requests come from the `fetchAll` method in article.js. It's the R (i.e. Read) in CRUD being enacted.
     client.query('SELECT * FROM articles')
         .then(function(result) {
             response.send(result.rows);
@@ -71,7 +71,7 @@ app.post('/articles', (request, response) => {
     // COMMENTed: What number(s) of the full-stack-diagram.png image correspond to the following line of code? 
     // Which method of article.js is interacting with this particular piece of `server.js`? 
     // What part of CRUD is being enacted/managed by this particular piece of code?
-    // 3 and 4 in the diagram again. This one interacts with the `insertRecord` method. This is an example of "C" (Create).
+    // 3 and 5 in the diagram again (with a successful 4 inferred), plus this time data from 2 (all the `request.body` lines) is involved. This one interacts with the `insertRecord` method. This is an example of "C" (Create).
     client.query(
         `INSERT INTO
         articles(title, author, "authorUrl", category, "publishedOn", body)
@@ -98,7 +98,7 @@ app.put('/articles/:id', (request, response) => {
     // COMMENTed: What number(s) of the full-stack-diagram.png image correspond to the following line of code? 
     // Which method of article.js is interacting with this particular piece of `server.js`? 
     // What part of CRUD is being enacted/managed by this particular piece of code?
-    // Another 3 and 4. This one interacts with the `updateRecord` method (which doesn't seem to get called yet). The UPDATE keyword is a good hint that this is a "U".
+    // Another 2, 3, (4), 5. This one interacts with the `updateRecord` method (which doesn't seem to get called yet). The UPDATE keyword is a good hint that this is a "U".
     client.query(
         `UPDATE articles
         SET
@@ -124,10 +124,10 @@ app.put('/articles/:id', (request, response) => {
 });
 
 app.delete('/articles/:id', (request, response) => {
-    // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? 
+    // COMMENTed: What number(s) of the full-stack-diagram.png image correspond to the following line of code? 
     // Which method of article.js is interacting with this particular piece of `server.js`? 
     // What part of CRUD is being enacted/managed by this particular piece of code?
-    // PUT YOUR RESPONSE HERE
+    // And, to complete CRUD with a "D(elete or Destroy)", we have another 2, 3, (4), 5. This one handles requests from `deleteRecord`.
     client.query(
         `DELETE FROM articles WHERE article_id=$1;`,
         [request.params.id]
@@ -141,10 +141,10 @@ app.delete('/articles/:id', (request, response) => {
 });
 
 app.delete('/articles', (request, response) => {
-    // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? 
+    // COMMENTed: What number(s) of the full-stack-diagram.png image correspond to the following line of code? 
     // Which method of article.js is interacting with this particular piece of `server.js`? 
     // What part of CRUD is being enacted/managed by this particular piece of code?
-    // PUT YOUR RESPONSE HERE
+    // Pretty similar to the last answer: 3, (4), 5, and D. (No reference to data getting passed with the request this time.) This one interacts with `truncateTable` (and is extra destructive).
     client.query(
         'DELETE FROM articles;'
     )
@@ -156,8 +156,8 @@ app.delete('/articles', (request, response) => {
         });
 });
 
-// COMMENT: What is this function invocation doing?
-// PUT YOUR RESPONSE HERE
+// COMMENTed: What is this function invocation doing?
+// The line below calls the `loadDB` function, which makes sure there's a table to hold articles in the database and then calls `loadArticles` to load it up with article data.
 loadDB();
 
 app.listen(PORT, () => {
@@ -168,8 +168,8 @@ app.listen(PORT, () => {
 //////// ** DATABASE LOADER ** ////////
 ////////////////////////////////////////
 function loadArticles() {
-    // COMMENT: Why is this function called after loadDB?
-    // PUT YOUR RESPONSE HERE
+    // COMMENTed: Why is this function called after loadDB?
+    // It's pretty hard to load something that doesn't exist.
     client.query('SELECT COUNT(*) FROM articles')
         .then(result => {
             // REVIEW: result.rows is an array of objects that Postgres returns as a response to a query.
@@ -195,8 +195,8 @@ function loadArticles() {
 }
 
 function loadDB() {
-    // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-    // PUT YOUR RESPONSE HERE
+    // COMMENTed: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
+    // Here we're dealing with queries and results exchanged between the server and database, so 3 and 4. I don't think article.js / the front end get involved here. The "C" part of CRUD will be enacted. You might expect that's the case because of the CREATE keyword, but my reading suggests that CRUD doesn't really relate to the database itself getting set up, as it is here. Instead, I think it's the INSERTing that happens in `loadArticles` callback that corresponds to the Creating of persistent data.
     client.query(`
       CREATE TABLE IF NOT EXISTS articles (
       article_id SERIAL PRIMARY KEY,
