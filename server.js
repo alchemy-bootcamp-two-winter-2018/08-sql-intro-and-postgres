@@ -32,10 +32,10 @@ client.connect();
 // REVIEW: Install the middleware plugins:
 
 // COMMENT: What kind of request body is this first middleware handling?
-// PUT YOUR RESPONSE HERE
+//  It parses incoming requests with JSON content and is based on body-parser.
 app.use(express.json());
 // COMMENT: What kind of request body is this second middleware handling?
-// 
+// This parser accepts only UTF-8 encoding of the body, it takes key/value pairs where the value can be a string, array, or type {extended: true}.
 app.use(express.urlencoded({extended: true}));
 // COMMENT: What is this middleware doing for us?
 // Handling static files, and sending them to the public address.
@@ -47,7 +47,7 @@ app.get('/new', (request, response) => {
     // COMMENT: 
     // 1) What number(s) of the full-stack-diagram.png image correspond to the following line of code?
     // 2) What part of the front end process is interacting with this particular piece of `server.js`? 
-    // The response would be #5, and is sending info to .
+    // The response would be #5, and is sending info to the given path 'new.html' for display.
     response.sendFile('new.html', {root: './public'});
 });
 
@@ -56,7 +56,7 @@ app.get('/articles', (request, response) => {
     // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? 
     // Which method of article.js is interacting with this particular piece of `server.js`? 
     // What part of CRUD is being enacted/managed by this particular piece of code?
-    // 2 and 3. The results are being sent to Article.loadAll. Update.
+    // 2, 3, and I think 4. response.send() is sending the HTTP response. SELECT.
     client.query('SELECT * FROM articles')
         .then(function(result) {
             response.send(result.rows);
@@ -70,7 +70,7 @@ app.post('/articles', (request, response) => {
     // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? 
     // Which method of article.js is interacting with this particular piece of `server.js`? 
     // What part of CRUD is being enacted/managed by this particular piece of code?
-    // 
+    // 3, 4, and 5. Thr Query is being inserted into the insertRecord function to supply data for the articles. CREATE. 
     client.query(
         `INSERT INTO
         articles(title, author, "authorUrl", category, "publishedOn", body)
@@ -97,7 +97,7 @@ app.put('/articles/:id', (request, response) => {
     // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? 
     // Which method of article.js is interacting with this particular piece of `server.js`? 
     // What part of CRUD is being enacted/managed by this particular piece of code?
-    // PUT YOUR RESPONSE HERE
+    // 3, 4, and 5. I'm guessing that it is affecting updateRecord function. UPDATE.
     client.query(
         `UPDATE articles
         SET
@@ -126,7 +126,7 @@ app.delete('/articles/:id', (request, response) => {
     // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? 
     // Which method of article.js is interacting with this particular piece of `server.js`? 
     // What part of CRUD is being enacted/managed by this particular piece of code?
-    // PUT YOUR RESPONSE HERE
+    //3, 4, and 5. It's interacting with the deleteRecord function. DELETE.
     client.query(
         `DELETE FROM articles WHERE article_id=$1;`,
         [request.params.id]
@@ -143,7 +143,7 @@ app.delete('/articles', (request, response) => {
     // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? 
     // Which method of article.js is interacting with this particular piece of `server.js`? 
     // What part of CRUD is being enacted/managed by this particular piece of code?
-    // PUT YOUR RESPONSE HERE
+    // 3, 4, and 5. It's interacting with the deleteRecord function. DELETE.
     client.query(
         'DELETE FROM articles;'
     )
@@ -156,7 +156,7 @@ app.delete('/articles', (request, response) => {
 });
 
 // COMMENT: What is this function invocation doing?
-// PUT YOUR RESPONSE HERE
+// It's calling the loadDB function.
 loadDB();
 
 app.listen(PORT, () => {
@@ -168,7 +168,7 @@ app.listen(PORT, () => {
 ////////////////////////////////////////
 function loadArticles() {
     // COMMENT: Why is this function called after loadDB?
-    // PUT YOUR RESPONSE HERE
+    // The database of information is needed to supply the data for the articles to load at all.
     client.query('SELECT COUNT(*) FROM articles')
         .then(result => {
             // REVIEW: result.rows is an array of objects that Postgres returns as a response to a query.
@@ -198,7 +198,7 @@ function loadArticles() {
 
 function loadDB() {
     // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-    // PUT YOUR RESPONSE HERE
+    //  3, 4, and 5. It's not. CREATE.
     client.query(`
       CREATE TABLE IF NOT EXISTS articles (
       article_id SERIAL PRIMARY KEY,
