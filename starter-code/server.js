@@ -135,7 +135,7 @@ app.delete('/articles/:id', (request, response) => {
     // Which method of article.js is interacting with this particular piece of `server.js`? 
     // What part of CRUD is being enacted/managed by this particular piece of code?
     // 138 = 3, 142 = 4
-    // Articles.delteRecord
+    // Articles.deleteRecord
     // This is DESTROY
     client.query(
         `DELETE FROM articles WHERE article_id=$1;`,
@@ -154,7 +154,8 @@ app.delete('/articles', (request, response) => {
     // Which method of article.js is interacting with this particular piece of `server.js`? 
     // What part of CRUD is being enacted/managed by this particular piece of code?
     // 157 = 3, 161 = 4/5
-    // Articles.deleteRecord
+    // This is definitely Articles.truncateTable. For sure.
+    // And this is positively DESTROY.
     client.query(
         'DELETE FROM articles;'
     )
