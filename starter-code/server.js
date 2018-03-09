@@ -154,7 +154,7 @@ app.delete('/articles', (request, response) => {
     // Which method of article.js is interacting with this particular piece of `server.js`? 
     // What part of CRUD is being enacted/managed by this particular piece of code?
     // 157 = 3, 161 = 4/5
-    // Articles.truncateTable
+    // Articles.deleteRecord
     client.query(
         'DELETE FROM articles;'
     )
