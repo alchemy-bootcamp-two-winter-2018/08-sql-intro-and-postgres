@@ -1,75 +1,35 @@
-Lab 08: SQL and PostgreSQL
-===
+# Kilovolt Blog
 
-## Content
-1. Submission Instructions
-1. Resources
-1. Configuration
-1. User Stories and Feature Tasks
+**Author**: Alchemy Code Lab Bootcamp Part 2 Day Class - Winter 2018
 
-----
+**Version**: 1.0.0
 
-## Submission Instructions
-Follow the submission instructions outlined in our [submit-process repo](https://github.com/alchemy-bootcamp-two-winter-2018/submit-process).
+## Overview
+A responsive blog app for Alchemy Code Lab students to document their experience during code school.
 
-## Resources  
-[SQL Syntax Cheatsheet](cheatsheets/sql.md)
+## Getting Started
+<!-- What are the steps that a user must take in order to build this app on their own machine and get it running? -->
+To run this project locally, `fork` and `clone` this repo.
+- Fork it to your GitHub account.
+- In your terminal: `git clone <your-fork-url>` and `npm install` to install the necessary npm packages
 
-[PostgreSQL Shell Cheatsheet](cheatsheets/postgress-shell.md)
+Do your work on a feature named branch, for example "responsive-header"
+- In your terminal: `git checkout <feature-name>`
+- To start the app, in your terminal run `node server.js` then in your browser, go to localhost:3000.
 
-[PostgreSQL Docs](https://www.postgresql.org/docs/)
+Make sure your project is still passing the linter.
+- In your terminal, `cd` into the project repo and run `eslint .`
 
-## Configuration
-_Your repository must include:_
+## Architecture
+<!-- Provide a detailed description of the application design. What technologies (languages, libraries, etc) you're using, and any other relevant design information. -->
+Front end: 
 
-```
-08-sql-intro-and-postgres
-├── .eslintrc.json
-├── .gitignore
-├── LICENSE
-├── README.md
-├── node_modules
-├── package-lock.json
-├── package.json
-├── data
-│   └── hackerIpsum.json
-├── public
-│   ├── index.html
-│   ├── new.html
-│   ├── scripts
-│   │   ├── article.js
-│   │   └── articleView.js
-│   ├── styles
-│   │   ├── base.css
-│   │   ├── fonts
-│   │   │   ├── icomoon.eot
-│   │   │   ├── icomoon.svg
-│   │   │   ├── icomoon.ttf
-│   │   │   └── icomoon.woff
-│   │   ├── icons.css
-│   │   ├── layout.css
-│   │   └── modules.css
-│   └── vendor
-│       └── styles
-│           ├── default.css
-│           ├── normalize.css
-│           └── railscasts.css
-└── server.js
-```
+Our JS is structured following MVC. Script folders/files are named to reflect which component they relate to: `articleView.js` or `models/Article.js`. 
 
-## User Stories and Feature Tasks
+Styles are structured following SMACCS.
 
-*As a user, I want to store my articles in a database so that my articles are available for users from an external source.*
+Libraries used include: jQuery (for DOM manipulation, AJAX), HandlebarsJS (for HTML templates), NormalizeCSS (for CSS reset).
 
-- Install and require the NPM Postgres package `pg` in your server.js file. Make sure to complete the connection string.
-- Note that the articleView.js methods are different now that we are not accessing the JSON file directly, and instead retrieving the articles from a database.
+Back end:
 
-*As a developer, I want to review my code base so that I have a deep understanding of its overall functionality.*
-
--  Complete the TODO items in server.js to ensure that your server file is properly configured
-- Study each of the new routes in your server.js file by examining the SQL statements and any associated data being handed through the request.
-- For each of the COMMENT items in server.js, provide a brief description of what that function immediately below is doing. Be sure to indicate, where applicable, details such as:
-  - What number(s) of the full-stack-diagram.png image is this part of the code interacting with?
-  - Which method of article.js is interacting with this particular piece of server.js?
-  - What part of ***CRUD*** is being enacted/managed by this particular piece of code?
-  - As applicable, an additional sentence or two of explanation about what the code is doing, what NPM packages are involved, etc. The goal is to demonstrate that you understand what is going on in the code without glossing over details, but also without writing a novel about it.
+We are using ExpressJS and Node to create a server. And a PSQL database for persistence. We use node-postgres (aka pg) to connect to our database. 
